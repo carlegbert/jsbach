@@ -65,44 +65,44 @@ describe('Note', () => {
     describe('#increment', () => {
         it('increments successfully', () => {
             const n = new Note(1, 1);
-            n.increment();
-            expect(n.letter).to.equal(2);
-            expect(n.octave).to.equal(1);
+            const incremented = n.increment();
+            expect(incremented.letter).to.equal(2);
+            expect(incremented.octave).to.equal(1);
         });
 
-        it('rolls over if end of alphabet is reached', () => {
+        it('rolls over if end of octave is reached', () => {
             const n = new Note(7, 1);
-            n.increment();
-            expect(n.letter).to.equal(1);
-            expect(n.octave).to.equal(2);
+            const incremented = n.increment();
+            expect(incremented.letter).to.equal(1);
+            expect(incremented.octave).to.equal(2);
         });
 
         it('resets augmentation to natural', () => {
             const n = new Note(3, 3);
-            n.increment();
-            expect(n.aug).to.equal(0);
+            const incremented = n.increment();
+            expect(incremented.aug).to.equal(0);
         })
     });
 
     describe('#decrement', () => {
         it('decrements successfully', () => {
             const n = new Note(3, 1);
-            n.decrement();
-            expect(n.letter).to.equal(2);
-            expect(n.octave).to.equal(1);
+            const decremented = n.decrement();
+            expect(decremented.letter).to.equal(2);
+            expect(decremented.octave).to.equal(1);
         });
 
-        it('rolls over if end of alphabet is reached', () => {
+        it('rolls over if end of octave is reached', () => {
             const n = new Note(1, 2);
-            n.decrement();
-            expect(n.letter).to.equal(7);
-            expect(n.octave).to.equal(1);
+            const decremented = n.decrement();
+            expect(decremented.letter).to.equal(7);
+            expect(decremented.octave).to.equal(1);
         });
 
         it('resets augmentation to natural', () => {
             const n = new Note(3, 3);
-            n.increment();
-            expect(n.aug).to.equal(0);
+            const decremented = n.decrement();
+            expect(decremented.aug).to.equal(0);
         })
     });
 });
