@@ -11,14 +11,21 @@ describe('Note', () => {
     it('toString returns string with no accidental when not specified', () => {
         const n: Note = new Note(0, 1);
         const str: string = n.toString();
-        const expected = `${NoteLetter[0]}1`;
+        const expected: string = `${NoteLetter[0]}1`;
         expect(str).to.equal(expected);
     });
 
-    it('toString returns string with accidental when specified', () => {
+    it('toString returns string with natural when specified', () => {
         const n: Note = new Note(0, 1);
         const str: string = n.toString(true);
-        const expected = `${NoteLetter[0]}${Augmentation[0]}1`;
+        const expected: string = `${NoteLetter[0]}${Augmentation[0]}1`;
+        expect(str).to.equal(expected);
+    });
+
+    it('toString returns note with accidental', () => {
+        const n: Note = new Note(0, 1, 1);
+        const str: string = n.toString();
+        const expected: string = `${NoteLetter[0]}${Augmentation[1]}1`;
         expect(str).to.equal(expected);
     });
 });

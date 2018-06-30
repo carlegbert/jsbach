@@ -48,7 +48,7 @@ export default class Note {
     }
 
     toString (showNaturalSymbol = false): string {
-        const augSymbol = (showNaturalSymbol && this._aug === 0) ? this.aug : '';
+        const augSymbol = (showNaturalSymbol || this._aug !== 0) ? Augmentation[this._aug] : '';
         return `${this.letter}${augSymbol}${this.octave}`;
     }
 }
