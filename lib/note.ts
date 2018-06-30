@@ -29,43 +29,55 @@ const validateOctave: Function = (octave: number) => {
 
 
 export default class Note {
-    public letter: NoteLetter;
-    public octave: number;
-    public aug: Augmentation;
+    private _letter: NoteLetter;
+    private _octave: number;
+    private _aug: Augmentation;
 
     constructor (letter: NoteLetter, octave: number, aug: Augmentation = 0) {
-        this.letter = letter;
-        this.octave = octave;
-        this.aug = aug;
+        this._letter = letter;
+        this._octave = octave;
+        this._aug = aug;
         this.validateAugmentation();
         validateOctave(octave);
     }
 
+    get letter () {
+        return this._letter;
+    }
+
+    get octave () {
+        return this._octave;
+    }
+
+    get aug () {
+        return this._aug;
+    }
+
     private normalize (): Note {
-        if (this.letter > LETTER_MAX) {
-            this.letter = LETTER_MIN;
-            this.octave += 1;
-        } else if (this.letter < LETTER_MIN) {
-            this.letter = LETTER_MAX;
-            this.octave -= 1;
+        if (this._letter > LETTER_MAX) {
+            this._letter = LETTER_MIN;
+            this._octave += 1;
+        } else if (this._letter < LETTER_MIN) {
+            this._letter = LETTER_MAX;
+            this._octave -= 1;
         }
-        validateOctave(this.octave);
+        validateOctave(this._octave);
         this.validateAugmentation();
         return this;
     }
 
     private validateAugmentation (): void {
-        if (this.aug < AUG_MIN || this.aug > AUG_MAX) throw new Error(`Augmentation to ${this.aug} out of range`);
+        if (this._aug < AUG_MIN || this._aug > AUG_MAX) throw new Error(`Augmentation to ${this._aug} out of range`);
     }
 
     toString (showNaturalSymbol = false): string {
-        const augSymbol = (showNaturalSymbol || this.aug !== 0) ? Augmentation[this.aug] : '';
-        return `${NoteLetter[this.letter]}${augSymbol}${this.octave}`;
+        const augSymbol = (showNaturalSymbol || this._aug !== 0) ? Augmentation[this._aug] : '';
+        return `${NoteLetter[this._letter]}${augSymbol}${this._octave}`;
     }
 
     augment (augIncrement: number): Note {
         try {
-            this.aug += augIncrement;
+            this._aug += augIncrement;
             this.validateAugmentation();
         } catch (err) {
             throw err;
@@ -75,17 +87,17 @@ export default class Note {
 
     increment (): Note {
         return new Note(
-            this.letter + 1,
-            this.octave,
-            this.aug,
+            this._letter + 1,
+            this._octave,
+            this._aug,
         ).normalize();
     }
 
     decrement (): Note {
         return new Note(
-            this.letter - 1,
-            this.octave,
-            this.aug,
+            this._letter - 1,
+            this._octave,
+            this._aug,
         ).normalize();
     }
 }
