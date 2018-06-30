@@ -1,5 +1,5 @@
 export enum NoteLetter {
-    A,
+    A = 1,
     B,
     C,
     D,
@@ -54,7 +54,25 @@ export default class Note {
         return this;
     }
 
-    increment (inc: number): void {
+    increment (): Note {
+        this.letter += 1;
+        if (this.letter > OCTAVE_MAX) {
+            this.letter = OCTAVE_MIN;
+            this.octave += 1;
+            validateOctave(this.octave);
+        }
+        this.aug = 0;
+        return this;
+    }
 
+    decrement (): Note {
+        this.letter -= 1;
+        if (this.letter < OCTAVE_MIN) {
+            this.letter = OCTAVE_MAX;
+            this.octave -= 1;
+            validateOctave(this.octave);
+        }
+        this.aug = 0;
+        return this;
     }
 }
