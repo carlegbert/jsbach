@@ -9,8 +9,8 @@ describe("Note", () => {
     });
 
     it("should throw an exception when constructor is called with augmentation out of bounds", () => {
-        expect(() => new Note(1, 1, -3)).to.throw();
-        expect(() => new Note(1, 1, 3)).to.throw();
+        expect(() => new Note(1, 1, -3)).to.throw(Error, /Augmentation to -3 out of range/);
+        expect(() => new Note(1, 1, 3)).to.throw(Error, /Augmentation to 3 out of range/);
     });
 
     describe("#toString", () => {
