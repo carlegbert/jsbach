@@ -1,6 +1,6 @@
 import 'mocha';
 import { expect } from 'chai';
-import Note, { Augmentation, NoteLetter } from './note';
+import Note, { Augmentation, NoteLetter } from '../lib/note';
 
 describe('Note', () => {
     it('should throw an exception when constructor is called with octave out of bounds', () => {
