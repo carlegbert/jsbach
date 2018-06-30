@@ -36,32 +36,6 @@ describe('Note', () => {
         });
     });
 
-    describe('#augment', () => {
-        it('throws when a note is augmented out of bounds', () => {
-            const n = new Note(1, 1);
-            expect(() => n.augment(3)).to.throw();
-            expect(() => n.augment(-3)).to.throw();
-        });
-
-        it('augments successfully', () => {
-            const n = new Note(1, 1);
-            n.augment(2);
-            expect(n.aug).to.equal(2);
-            n.augment(-4);
-            expect(n.aug).to.equal(-2);
-        });
-
-        it('augments with chaining', () => {
-            const note = new Note(1, 1);
-            note
-                .augment(-1)
-                .augment(2)
-                .augment(1)
-                .augment(-3);
-            expect(note.aug).to.equal(-1);
-        });
-    });
-
     describe('#increment', () => {
         it('increments successfully', () => {
             const n = new Note(1, 1);
@@ -81,7 +55,12 @@ describe('Note', () => {
             const n = new Note(3, 3, -2);
             const incremented = n.increment();
             expect(incremented.aug).to.equal(0);
-        })
+        });
+
+        it('throws if rollover results in going above max octave', () => {
+            const n = new Note(7, 7);
+            expect(() => n.increment()).to.throw(Error, /out of range/);
+        });
     });
 
     describe('#decrement', () => {
@@ -103,7 +82,38 @@ describe('Note', () => {
             const n = new Note(3, 3, 1);
             const decremented = n.decrement();
             expect(decremented.aug).to.equal(0);
-        })
+        });
+
+        it('throws if rollover results in going below min octave', () => {
+            const n = new Note(1, 1);
+            expect(() => n.decrement()).to.throw(Error, /out of range/);
+        });
+    });
+
+    describe('#sharpen', () => {
+        it('sharpens successfully', () => {
+            const n = new Note(1, 1, 1);
+            const raised = n.sharpen();
+            expect(raised.aug).to.equal(2);
+        });
+
+        it('throws when going higher than a double sharp', () => {
+            const n = new Note(2, 3, 2);
+            expect(() => n.sharpen()).to.throw(Error, /Can't sharpen above/);
+        });
+    });
+
+    describe('#flatten', () => {
+        it('flattens successfully', () => {
+            const n = new Note(7, 3, 1);
+            const lowered = n.flatten();
+            expect(lowered.aug).to.equal(0);
+        });
+
+        it('throws when going lower than a double flat', () => {
+            const n = new Note(5, 7, -2);
+            expect(() => n.flatten()).to.throw(Error, /Can't flatten below/);
+        });
     });
 });
 

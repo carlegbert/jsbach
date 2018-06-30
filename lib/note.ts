@@ -30,8 +30,7 @@ const validateOctave: Function = (octave: number) => {
 const validateAugmentation: Function = (aug: Augmentation) => {
     if (aug < AUG_MIN || aug > AUG_MAX)
         throw new Error(`Augmentation to ${aug} out of range`);
-}
-
+};
 
 export default class Note {
     private _letter: NoteLetter;
@@ -39,10 +38,10 @@ export default class Note {
     private _aug: Augmentation;
 
     constructor (letter: NoteLetter, octave: number, aug: Augmentation = 0) {
+        validateAugmentation(aug);
         this._letter = letter;
         this._octave = octave;
         this._aug = aug;
-        validateAugmentation(this._aug);
         validateOctave(octave);
     }
 
@@ -67,7 +66,6 @@ export default class Note {
             this._octave -= 1;
         }
         validateOctave(this._octave);
-        validateAugmentation(this._aug);
         return this;
     }
 
@@ -76,10 +74,26 @@ export default class Note {
         return `${NoteLetter[this._letter]}${augSymbol}${this._octave}`;
     }
 
-    augment (augIncrement: number): Note {
-        validateAugmentation(this._aug + augIncrement);
-        this._aug += augIncrement;
-        return this;
+    sharpen (): Note {
+        if (this._aug === AUG_MAX)
+            throw new Error("Can't sharpen above 𝄪");
+
+        return new Note(
+            this._letter,
+            this._octave,
+            this._aug + 1,
+        );
+    }
+
+    flatten (): Note {
+        if (this._aug === AUG_MIN)
+            throw new Error("Can't flatten below 𝄫");
+
+        return new Note(
+            this._letter,
+            this._octave,
+            this._aug - 1,
+        );
     }
 
     increment (): Note {
