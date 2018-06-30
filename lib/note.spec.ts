@@ -78,7 +78,7 @@ describe('Note', () => {
         });
 
         it('resets augmentation to natural', () => {
-            const n = new Note(3, 3);
+            const n = new Note(3, 3, -2);
             const incremented = n.increment();
             expect(incremented.aug).to.equal(0);
         })
@@ -100,7 +100,7 @@ describe('Note', () => {
         });
 
         it('resets augmentation to natural', () => {
-            const n = new Note(3, 3);
+            const n = new Note(3, 3, 1);
             const decremented = n.decrement();
             expect(decremented.aug).to.equal(0);
         })

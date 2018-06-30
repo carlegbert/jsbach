@@ -86,7 +86,6 @@ export default class Note {
         return new Note(
             this._letter + 1,
             this._octave,
-            this._aug,
         ).normalize();
     }
 
@@ -94,7 +93,6 @@ export default class Note {
         return new Note(
             this._letter - 1,
             this._octave,
-            this._aug,
         ).normalize();
     }
 }
