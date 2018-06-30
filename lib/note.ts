@@ -27,6 +27,11 @@ const validateOctave: Function = (octave: number) => {
     if (octave < OCTAVE_MIN || octave > OCTAVE_MAX) throw new Error(`Octave ${octave} out of range`);
 };
 
+const validateAugmentation: Function = (aug: Augmentation) => {
+    if (aug < AUG_MIN || aug > AUG_MAX)
+        throw new Error(`Augmentation to ${aug} out of range`);
+}
+
 
 export default class Note {
     private _letter: NoteLetter;
@@ -37,7 +42,7 @@ export default class Note {
         this._letter = letter;
         this._octave = octave;
         this._aug = aug;
-        this.validateAugmentation();
+        validateAugmentation(this._aug);
         validateOctave(octave);
     }
 
@@ -62,12 +67,8 @@ export default class Note {
             this._octave -= 1;
         }
         validateOctave(this._octave);
-        this.validateAugmentation();
+        validateAugmentation(this._aug);
         return this;
-    }
-
-    private validateAugmentation (): void {
-        if (this._aug < AUG_MIN || this._aug > AUG_MAX) throw new Error(`Augmentation to ${this._aug} out of range`);
     }
 
     toString (showNaturalSymbol = false): string {
@@ -76,12 +77,8 @@ export default class Note {
     }
 
     augment (augIncrement: number): Note {
-        try {
-            this._aug += augIncrement;
-            this.validateAugmentation();
-        } catch (err) {
-            throw err;
-        }
+        validateAugmentation(this._aug + augIncrement);
+        this._aug += augIncrement;
         return this;
     }
 
