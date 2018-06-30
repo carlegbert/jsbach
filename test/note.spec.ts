@@ -3,11 +3,6 @@ import "mocha";
 import Note, { Augmentation, NoteLetter } from "../lib/note";
 
 describe("Note", () => {
-    it("should throw an exception when constructor is called with octave out of bounds", () => {
-        expect(() => new Note(1, -1)).to.throw();
-        expect(() => new Note(1, 9)).to.throw();
-    });
-
     it("should throw an exception when constructor is called with augmentation out of bounds", () => {
         expect(() => new Note(1, 1, -3)).to.throw(Error, /Augmentation to -3 out of range/);
         expect(() => new Note(1, 1, 3)).to.throw(Error, /Augmentation to 3 out of range/);
@@ -56,11 +51,6 @@ describe("Note", () => {
             const incremented = n.increment();
             expect(incremented.aug).to.equal(0);
         });
-
-        it("throws if rollover results in going above max octave", () => {
-            const n = new Note(7, 7);
-            expect(() => n.increment()).to.throw(Error, /out of range/);
-        });
     });
 
     describe("#decrement", () => {
@@ -82,11 +72,6 @@ describe("Note", () => {
             const n = new Note(3, 3, 1);
             const decremented = n.decrement();
             expect(decremented.aug).to.equal(0);
-        });
-
-        it("throws if rollover results in going below min octave", () => {
-            const n = new Note(1, 1);
-            expect(() => n.decrement()).to.throw(Error, /out of range/);
         });
     });
 

@@ -16,24 +16,10 @@ export enum Augmentation {
     "𝄪" = 2,
 }
 
-const OCTAVE_MIN: number = 1;
-const OCTAVE_MAX: number = 7;
 const LETTER_MIN: number = 1;
 const LETTER_MAX: number = 7;
 const AUG_MIN: number = -2;
 const AUG_MAX: number = 2;
-
-const validateOctave = (octave: number): void => {
-    if (octave < OCTAVE_MIN || octave > OCTAVE_MAX) {
-        throw new Error(`Octave ${octave} out of range`);
-    }
-};
-
-const validateAugmentation = (aug: Augmentation): void => {
-    if (aug < AUG_MIN || aug > AUG_MAX) {
-        throw new Error(`Augmentation to ${aug} out of range`);
-    }
-};
 
 export default class Note {
     private _letter: NoteLetter;
@@ -41,11 +27,13 @@ export default class Note {
     private _aug: Augmentation;
 
     constructor(letter: NoteLetter, octave: number, aug: Augmentation = 0) {
-        validateAugmentation(aug);
-        this._letter = letter;
-        this._octave = octave;
+        if (aug < AUG_MIN || aug > AUG_MAX) {
+            throw new Error(`Augmentation to ${aug} out of range`);
+        }
+        this._octave = octave + Math.floor(letter / LETTER_MAX);
+        this._letter = letter % LETTER_MAX;
         this._aug = aug;
-        validateOctave(octave);
+        this.normalize();
     }
 
     get letter() {
@@ -91,17 +79,17 @@ export default class Note {
         return new Note(
             this._letter + 1,
             this._octave,
-        ).normalize();
+        );
     }
 
     public decrement(): Note {
         return new Note(
             this._letter - 1,
             this._octave,
-        ).normalize();
+        );
     }
 
-    private normalize(): Note {
+    private normalize(): void {
         if (this._letter > LETTER_MAX) {
             this._letter = LETTER_MIN;
             this._octave += 1;
@@ -109,7 +97,5 @@ export default class Note {
             this._letter = LETTER_MAX;
             this._octave -= 1;
         }
-        validateOctave(this._octave);
-        return this;
     }
 }
