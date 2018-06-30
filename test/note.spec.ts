@@ -1,34 +1,34 @@
-import 'mocha';
-import { expect } from 'chai';
-import Note, { Augmentation, NoteLetter } from '../lib/note';
+import { expect } from "chai";
+import "mocha";
+import Note, { Augmentation, NoteLetter } from "../lib/note";
 
-describe('Note', () => {
-    it('should throw an exception when constructor is called with octave out of bounds', () => {
+describe("Note", () => {
+    it("should throw an exception when constructor is called with octave out of bounds", () => {
         expect(() => new Note(1, -1)).to.throw();
         expect(() => new Note(1, 9)).to.throw();
     });
 
-    it('should throw an exception when constructor is called with augmentation out of bounds', () => {
+    it("should throw an exception when constructor is called with augmentation out of bounds", () => {
         expect(() => new Note(1, 1, -3)).to.throw();
         expect(() => new Note(1, 1, 3)).to.throw();
     });
 
-    describe('#toString', () => {
-        it('returns string with no accidental when not specified', () => {
+    describe("#toString", () => {
+        it("returns string with no accidental when not specified", () => {
             const n: Note = new Note(1, 1);
             const str: string = n.toString();
             const expected: string = `${NoteLetter[1]}1`;
             expect(str).to.equal(expected);
         });
 
-        it('returns string with natural when specified', () => {
+        it("returns string with natural when specified", () => {
             const n: Note = new Note(1, 1);
             const str: string = n.toString(true);
             const expected: string = `${NoteLetter[1]}${Augmentation[0]}1`;
             expect(str).to.equal(expected);
         });
 
-        it('returns note with accidental', () => {
+        it("returns note with accidental", () => {
             const n: Note = new Note(1, 1, 1);
             const str: string = n.toString();
             const expected: string = `${NoteLetter[1]}${Augmentation[1]}1`;
@@ -36,84 +36,83 @@ describe('Note', () => {
         });
     });
 
-    describe('#increment', () => {
-        it('increments successfully', () => {
+    describe("#increment", () => {
+        it("increments successfully", () => {
             const n = new Note(1, 1);
             const incremented = n.increment();
             expect(incremented.letter).to.equal(2);
             expect(incremented.octave).to.equal(1);
         });
 
-        it('rolls over if end of octave is reached', () => {
+        it("rolls over if end of octave is reached", () => {
             const n = new Note(7, 1);
             const incremented = n.increment();
             expect(incremented.letter).to.equal(1);
             expect(incremented.octave).to.equal(2);
         });
 
-        it('resets augmentation to natural', () => {
+        it("resets augmentation to natural", () => {
             const n = new Note(3, 3, -2);
             const incremented = n.increment();
             expect(incremented.aug).to.equal(0);
         });
 
-        it('throws if rollover results in going above max octave', () => {
+        it("throws if rollover results in going above max octave", () => {
             const n = new Note(7, 7);
             expect(() => n.increment()).to.throw(Error, /out of range/);
         });
     });
 
-    describe('#decrement', () => {
-        it('decrements successfully', () => {
+    describe("#decrement", () => {
+        it("decrements successfully", () => {
             const n = new Note(3, 1);
             const decremented = n.decrement();
             expect(decremented.letter).to.equal(2);
             expect(decremented.octave).to.equal(1);
         });
 
-        it('rolls over if end of octave is reached', () => {
+        it("rolls over if end of octave is reached", () => {
             const n = new Note(1, 2);
             const decremented = n.decrement();
             expect(decremented.letter).to.equal(7);
             expect(decremented.octave).to.equal(1);
         });
 
-        it('resets augmentation to natural', () => {
+        it("resets augmentation to natural", () => {
             const n = new Note(3, 3, 1);
             const decremented = n.decrement();
             expect(decremented.aug).to.equal(0);
         });
 
-        it('throws if rollover results in going below min octave', () => {
+        it("throws if rollover results in going below min octave", () => {
             const n = new Note(1, 1);
             expect(() => n.decrement()).to.throw(Error, /out of range/);
         });
     });
 
-    describe('#sharpen', () => {
-        it('sharpens successfully', () => {
+    describe("#sharpen", () => {
+        it("sharpens successfully", () => {
             const n = new Note(1, 1, 1);
             const raised = n.sharpen();
             expect(raised.aug).to.equal(2);
         });
 
-        it('throws when going higher than a double sharp', () => {
+        it("throws when going higher than a double sharp", () => {
             const n = new Note(2, 3, 2);
             expect(() => n.sharpen()).to.throw(Error, /Can't sharpen above/);
         });
     });
 
-    describe('#flatten', () => {
-        it('flattens successfully', () => {
+    describe("#flatten", () => {
+        it("flattens successfully", () => {
             const n = new Note(7, 3, 1);
             const lowered = n.flatten();
             expect(lowered.aug).to.equal(0);
         });
 
-        it('throws when going lower than a double flat', () => {
+        it("throws when going lower than a double flat", () => {
             const n = new Note(5, 7, -2);
             expect(() => n.flatten()).to.throw(Error, /Can't flatten below/);
         });
     });
 });
-
