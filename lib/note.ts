@@ -1,25 +1,33 @@
 import {
-    NoteLetter,
-    Augmentation,
-    LETTER_MIN,
-    LETTER_MAX,
-    AUG_MIN,
     AUG_MAX,
-} from './constants';
+    AUG_MIN,
+    Augmentation,
+    LETTER_MAX,
+    LETTER_MIN,
+    NoteLetter,
+} from "./constants";
 
 export default class Note {
-    private _letter: NoteLetter;
-    private _octave: number;
-    private _aug: Augmentation;
+    private readonly _letter: number;
+    private readonly _octave: number;
+    private readonly _aug: number;
 
-    constructor(letter: NoteLetter, octave: number, aug: Augmentation = 0) {
+    constructor(letter: number, octave: number, aug: number = 0) {
         if (aug < AUG_MIN || aug > AUG_MAX) {
             throw new Error(`Augmentation to ${aug} out of range`);
         }
-        this._octave = octave + Math.floor(letter / LETTER_MAX);
-        this._letter = letter % LETTER_MAX;
+
+        if (letter > LETTER_MAX) {
+            letter = LETTER_MIN;
+            octave += 1;
+        } else if (letter < LETTER_MIN) {
+            letter = LETTER_MAX;
+            octave -= 1;
+        }
+
+        this._octave = octave;
+        this._letter = letter;
         this._aug = aug;
-        this.normalize();
     }
 
     get letter() {
@@ -73,15 +81,5 @@ export default class Note {
             this._letter - 1,
             this._octave,
         );
-    }
-
-    private normalize(): void {
-        if (this._letter > LETTER_MAX) {
-            this._letter = LETTER_MIN;
-            this._octave += 1;
-        } else if (this._letter < LETTER_MIN) {
-            this._letter = LETTER_MAX;
-            this._octave -= 1;
-        }
     }
 }
