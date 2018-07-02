@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import "mocha";
-import Note, { Augmentation, NoteLetter } from "../lib/note";
+import Note from "../lib/note";
+import { Augmentation, NoteLetter } from '../lib/constants';
 
 describe("Note", () => {
     it("should throw an exception when constructor is called with augmentation out of bounds", () => {

@@ -1,25 +1,11 @@
-export enum NoteLetter {
-    A = 1,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-}
-
-export enum Augmentation {
-    "𝄫" = -2,
-    "♭" = -1,
-    "♮" = 0,
-    "♯" = 1,
-    "𝄪" = 2,
-}
-
-const LETTER_MIN: number = 1;
-const LETTER_MAX: number = 7;
-const AUG_MIN: number = -2;
-const AUG_MAX: number = 2;
+import {
+    NoteLetter,
+    Augmentation,
+    LETTER_MIN,
+    LETTER_MAX,
+    AUG_MIN,
+    AUG_MAX,
+} from './constants';
 
 export default class Note {
     private _letter: NoteLetter;
