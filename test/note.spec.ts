@@ -2,12 +2,13 @@ import { expect } from "chai";
 import "mocha";
 
 import { Augmentation, NoteLetter } from "../lib/constants";
+import { NoteError } from "../lib/exceptions";
 import Note from "../lib/note";
 
 describe("Note", () => {
     it("should throw an exception when constructor is called with augmentation out of bounds", () => {
-        expect(() => new Note(1, 1, -3)).to.throw(Error, /Augmentation to -3 out of range/);
-        expect(() => new Note(1, 1, 3)).to.throw(Error, /Augmentation to 3 out of range/);
+        expect(() => new Note(1, 1, -3)).to.throw(NoteError, /Augmentation to -3 out of range/);
+        expect(() => new Note(1, 1, 3)).to.throw(NoteError, /Augmentation to 3 out of range/);
     });
 
     describe("#toString", () => {
@@ -86,7 +87,7 @@ describe("Note", () => {
 
         it("throws when going higher than a double sharp", () => {
             const n = new Note(2, 3, 2);
-            expect(() => n.sharpen()).to.throw(Error, /Can't sharpen above/);
+            expect(() => n.sharpen()).to.throw(NoteError, /Can't sharpen above/);
         });
     });
 
@@ -99,7 +100,7 @@ describe("Note", () => {
 
         it("throws when going lower than a double flat", () => {
             const n = new Note(5, 7, -2);
-            expect(() => n.flatten()).to.throw(Error, /Can't flatten below/);
+            expect(() => n.flatten()).to.throw(NoteError, /Can't flatten below/);
         });
     });
 });

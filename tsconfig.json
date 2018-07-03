@@ -3,6 +3,6 @@
     "noImplicitAny": true,
     "outDir": "build",
     "sourceMap": true,
-    "target": "es5"
+    "target": "es6"
   }
 }

@@ -36,7 +36,11 @@
       ".ts"
     ],
     "exclude": [
-      "**/*.d.ts"
+      "**/*.d.ts",
+      "**/*.js",
+      "**/*.spec.ts",
+      "lib/exceptions.ts",
+      "lib/constants.ts"
     ],
     "all": true
   }

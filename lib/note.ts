@@ -6,6 +6,7 @@ import {
     LETTER_MIN,
     NoteLetter,
 } from "./constants";
+import { NoteError } from "./exceptions";
 
 export default class Note {
     private readonly _letter: number;
@@ -14,7 +15,7 @@ export default class Note {
 
     constructor(letter: number, octave: number, aug: number = 0) {
         if (aug < AUG_MIN || aug > AUG_MAX) {
-            throw new Error(`Augmentation to ${aug} out of range`);
+            throw new NoteError(`Augmentation to ${aug} out of range`);
         }
 
         if (letter > LETTER_MAX) {
@@ -49,7 +50,7 @@ export default class Note {
 
     public sharpen(): Note {
         if (this._aug === AUG_MAX) {
-            throw new Error("Can't sharpen above 𝄪");
+            throw new NoteError("Can't sharpen above 𝄪");
         }
         return new Note(
             this._letter,
@@ -60,7 +61,7 @@ export default class Note {
 
     public flatten(): Note {
         if (this._aug === AUG_MIN) {
-            throw new Error("Can't flatten below 𝄫");
+            throw new NoteError("Can't flatten below 𝄫");
         }
         return new Note(
             this._letter,
