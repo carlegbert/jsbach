@@ -1,0 +1,9 @@
+#! /bin/sh
+
+set -e
+
+npm run test > /dev/null
+echo "pre-commit lint passed..."
+npm run lint > /dev/null
+echo "pre-commit tests passed..."
+
